@@ -24,17 +24,13 @@ namespace Test.Controllers
 
         public ActionResult Manifest()
         {
-            var bundledResources = new List<string>();
+            var bundledResources = BundleTable.Bundles.Select(bundle => Scripts.Url(bundle.Path).ToString()).ToList();
 
-            foreach (var bundle in BundleTable.Bundles)
-            {
-                bundledResources.Add(Scripts.Url(bundle.Path).ToString());
-            }
-            var manifestResult = new ManifestResultFile("2.3")
+            var manifestResult = new ManifestResultFile("2.4")
             {
                 CacheResources = bundledResources,
                 NetworkResources = new string[] { "*" },
-                FallbackResources = { { "/scripts/bootstrap.min.js", "/scripts/bootstrap.js" } }
+                FallbackResources = { { "http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js", "/scripts/bootstrap.js" } }
             };
             return manifestResult;
         }

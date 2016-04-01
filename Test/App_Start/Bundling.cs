@@ -13,15 +13,26 @@ namespace Test.App_Start
         {
             bundles.UseCdn = true;
 
-            bundles.Add(
-                new ScriptBundle("~/bundles/jquery", "http://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js")
-                .Include("~/Scripts/jquery-1.10.2.js")
-            );
+            //Popular fallback expressions
+            //lib               fallback expression
+            //--------------------------------------
+            //jQuery            window.jQuery
+            //jQuery.UI         window.jQuery.ui
+            //Modernizr         window.Modernizr
+            //Bootstrap	        $.fn.modal
 
-            bundles.Add(
-                new ScriptBundle("~/bundles/bootstrap", "http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js")
-                .Include("~/Scripts/bootstrap.js")
-            );
+            var bundleItem = new ScriptBundle("~/bundles/jquery",
+                "http://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+                .Include("~/Scripts/jquery-1.10.2.js");
+            bundleItem.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(bundleItem);
+
+            bundleItem = new ScriptBundle("~/bundles/bootstrap",
+                "http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js")
+                .Include("~/Scripts/bootstrap.js");
+            bundleItem.CdnFallbackExpression = "$.fn.modal";
+            bundles.Add(bundleItem);
+
 
             bundles.Add(new StyleBundle("~/bundles/bootstrapstyle", "http://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css").Include(
                 "~/Content/bootstrap.css"
